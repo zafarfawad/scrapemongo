@@ -33,10 +33,16 @@ mongoose.Promise = Promise;
 // mongoose.connect("mongodb://localhost/week18Populaterfawad17", function (err){
     // mongoose.connect("mongodb://heroku_hv90brj8:ar6kop96gn2v8bs8qsgo36677c@ds117489.mlab.com:17489/heroku_hv90brj8",{
 
-mongoose.connect("mongodb:heroku_x1zwt4p4:Password1!@ds117509.mlab.com:17509/heroku_x1zwt4p4", function (err){
-    if(err) throw err;
-});
+// mongoose.connect("mongodb:heroku_x1zwt4p4:Password1!@ds117509.mlab.com:17509/heroku_x1zwt4p4", function (err){
+//     if(err) throw err;
+// });
 
+mongoose.connect(
+    process.env.MONGOLAB_CYAN_URI || "mongodb://localhost/week18Populaterfawad17",
+    function (err) {
+        if (err) throw err;
+    }
+);
 // Routes
 require("./routing/apiRoutes")(app);
 require("./routing/htmlRouter")(app);
