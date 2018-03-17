@@ -50,15 +50,15 @@ $(document).on("click", "#savenote", function () {
 
     // Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
-        method: "POST",
-        url: "/articles/" + thisId,
-        data: {
-            // Value taken from title input
-            title: $("#titleinput").val(),
-            // Value taken from note textarea
-            body: $("#bodyinput").val()
-        }
-    })
+            method: "POST",
+            url: "/articles/" + thisId,
+            data: {
+                // Value taken from title input
+                title: $("#titleinput").val(),
+                // Value taken from note textarea
+                body: $("#bodyinput").val()
+            }
+        })
         // With that done
         .then(function (data) {
             // Log the response

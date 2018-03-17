@@ -17,8 +17,13 @@ app.get("/api/espnloaddata", function (req, res) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
         // Now, we grab every h2 within an article tag, and do the following:
+        
+        db.Article.remove({})
         $(".contentItem__contentWrapper").each(function (i, element) {
             // Save an empty result object
+            if (i>10){
+                return false
+            }
             var result = {};
 
             // Add the text and href of every link, and save them as properties of the result object
@@ -30,6 +35,7 @@ app.get("/api/espnloaddata", function (req, res) {
                 .text();
 
             // Create a new Article using the `result` object built from scraping
+            
             db.Article.create(result)
                 .then(function (dbArticle) {
                     // View the added result in the console
@@ -43,7 +49,7 @@ app.get("/api/espnloaddata", function (req, res) {
         });
 
         // If we were able to successfully scrape and save an Article, send a message to the client
-        // res.send("Scrape Complete");
+        res.send("Scrape Complete");
     });
 });
 

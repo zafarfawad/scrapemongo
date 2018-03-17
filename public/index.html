@@ -114,8 +114,11 @@
     <!-- <script src="app.js"></script> -->
     <script>
         $("#scrapeData").on("click", function () {
-            $.get("/api/espnloaddata", function (data) {});
+            $.get("/api/espnloaddata", function (data) {
+                Console.log(data);
+            });
             $("#myModal").modal();
+
         });
 
         $("#loadData").on("click", function () {
