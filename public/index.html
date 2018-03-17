@@ -2,62 +2,162 @@
 <html lang="en-us">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Scraping With Mongoose</title>
-    <style>
-        body {
-            background-color: #F2F6D0
-        }
-
-        #wrapper {
-            width: 960px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-top: 5%;
-        }
-
-        #articles {
-            display: inline-block;
-            overflow: auto;
-            width: 60%;
-            height: 700px;
-        }
-
-        #notes {
-            float: right;
-            width: 30%;
-        }
-
-        textarea,
-        input {
-            display: block;
-            width: 100%;
-            background-color: #FCF5C7;
-        }
-
-        input {
-            height: 36px;
-            font-size: 24px;
-        }
-
-        textarea {
-            height: 200px;
-            font-size: 18px;
-        }
-    </style>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Local CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Scraper</title>
 </head>
 
 <body>
-    <div id="wrapper">
-        <h1>Note Scraper</h1>
-        <h2>
-            <i>If you can do this...the homework should be no problem.</i>
-        </h2>
-        <div id="articles"></div>
-        <div id="notes"></div>
+
+    <div class="jumbotron text-center">
+        <h1 class="display-3 vertical-center">ESPN Scraper</h1>
+        <p class="lead">This website scrapes data from espncricinfo.com</p>
+
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="app.js"></script>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <button type="button " class="btn btn-primary btn-lg" id="scrapeData">Scrape Data</button>
+
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12 text-center ">
+            <button type="button vertical-center" class="btn btn-primary btn-lg" id="loadData">Load Data</button>
+
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Data has been scraped from ESPN and saved in the DB. Please Click Load Data to display data here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="notesModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- ==============================-->
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Notes</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/action_page.php" method="get">
+                        Title:
+                        <!-- <input type="text" id="title" name="Title">
+                        <br> Notes:
+                        <input type="text" id="note" name="Notes">
+                        <br> -->
+                        <div class="form-group">
+                            <label for="exampleTextarea">Title</label>
+                            <textarea class="form-control" id="title" rows="1"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleTextarea">Notes</label>
+                            <textarea class="form-control" id="note" rows="3"></textarea>
+                        </div>
+                        <input type="submit" id="submitNote" value="Submit">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ============ -->
+    <div class="row" id="record-table">
+        <div class="col-sm-12">
+            <table data-link class="table table-hover">
+                <thead>
+                    <tr>
+                        <th id="data-id" data-field="col">ID</th>
+                        <th id="data-title" data-field="col">Title</th>
+                        <th id="data-story" data-field="col">Story</th>
+
+                    </tr>
+                </thead>
+                <tbody id="record">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/2.2.2/moment-duration-format.js"></script>
+    <!-- <script src="app.js"></script> -->
+    <script>
+        $("#scrapeData").on("click", function () {
+            $.get("/api/espnloaddata", function (data) {});
+            $("#myModal").modal();
+        });
+
+        $("#loadData").on("click", function () {
+            $.get("/api/espn", function (data) {
+                for (var i = 0; i < data.length; i++) {
+
+                    $("#record").append(" <tr > " +
+
+                        `<td data-id='${data[i]._id}'> ` + data[i]._id +
+                        ` <td data-id = '${data[i]._id}' > ` + data[i].title +
+                        ` <td data-id = '${data[i]._id}' >` + data[i].link + "</tr> ");
+
+                }
+                $("td").attr("href", data._id);
+
+            });
+        });
+
+        $("#record").on("click", "td", function () {
+            var thisId = $(this).attr('data-id');
+            console.log(thisId);
+
+            $("#notesModal").modal();
+            $(".submitNote").attr("data-id", thisId);
+
+        });
+
+        $("#submitNote").on("click", function () {
+            event.preventDefault();
+            const thisId = $(this).attr('data-id');
+            var userNote = {
+                title: $("#title").val(),
+                note: $("#note").val()
+            }
+
+            $.post("/articles/" + thisId, userNote, function (data) {
+                console.log(data);
+
+            });
+
+        });
+    </script>
 </body>
 
 </html>
