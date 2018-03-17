@@ -18,7 +18,7 @@ app.get("/api/espnloaddata", function (req, res) {
         var $ = cheerio.load(response.data);
         // Now, we grab every h2 within an article tag, and do the following:
         
-        db.Article.remove({})
+        // db.Article.remove({})
         $(".contentItem__contentWrapper").each(function (i, element) {
             // Save an empty result object
             if (i>10){
