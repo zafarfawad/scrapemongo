@@ -31,7 +31,9 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 // mongoose.connect("mongodb://localhost/week18Populaterfawad17", {
-    mongoose.connect("mongodb://heroku_hv90brj8:ar6kop96gn2v8bs8qsgo36677c@ds117489.mlab.com:17489/heroku_hv90brj8",{
+    // mongoose.connect("mongodb://heroku_hv90brj8:ar6kop96gn2v8bs8qsgo36677c@ds117489.mlab.com:17489/heroku_hv90brj8",{
+
+        mongoose.connect("mongodb:fawad:1234@ds117509.mlab.com:17509/heroku_x1zwt4p4",{
 });
 
 // Routes
